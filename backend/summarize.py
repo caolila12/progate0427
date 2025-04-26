@@ -37,6 +37,7 @@ def summarize_content(content):
     記事の本文を日本語で要約する関数
     """
     try:
+        print("🛠️ summarize_content called!")
         prompt = f"次の英語の文章を日本語で要約してください：\n\n{content}"
         response = cohere_client.generate(
             model='command-r-plus',
