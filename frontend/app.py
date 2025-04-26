@@ -1,3 +1,9 @@
+import sys
+import os
+
+# sys.pathにプロジェクトルート（progate0427）を追加
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import streamlit as st
 import requests
 import pandas as pd
