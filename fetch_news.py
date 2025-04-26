@@ -35,7 +35,7 @@ def fetch_articles(query="生成AI", max_articles=100):
     if response.status_code == 200:
         data = response.json()
         articles = data.get("articles", [])
-        return [{"title": article["title"], "url": article["url"]} for article in articles]
+        return [{"title": article["title"], "url": article["url"],  "publishedAt": article["publishedAt"]} for article in articles]
     else:
         print(f"エラーが発生しました: {response.status_code}")
         return []
