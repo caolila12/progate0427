@@ -2,6 +2,7 @@ from fetch_news import fetch_articles
 from summarize import init_cohere, get_article_content, summarize_content
 import time
 from datetime import datetime
+from title_rewrite import generate_clickbait_title
 
 #日付表示変換
 def format_published_date(published_at_str):
@@ -21,9 +22,17 @@ def main():
 
     articles = fetch_articles()
 
+    #煽りタイトルに変更するか確認
+    choice = input("煽りタイトルに変更しますか？ (yes/no): ").strip().lower()
+    use_clickbait = (choice == "yes")
+
     for idx, article in enumerate(articles, start=1):
+        title = article['title']
+        if use_clickbait:
+            title = generate_clickbait_title(title)
+
         print(f"\n📰 記事 {idx}")
-        print(f"タイトル: {article['title']}")
+        print(f"タイトル: {title}")
         print(f"公開日時: {format_published_date(article['publishedAt'])}")
         print(f"URL: {article['url']}")
 
