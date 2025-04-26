@@ -2,8 +2,9 @@ import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 # .envファイルからGeminiのAPIキーを読み込み
-load_dotenv()
+load_dotenv(dotenv_path)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Geminiのクライアントを初期化

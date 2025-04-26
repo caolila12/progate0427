@@ -5,11 +5,12 @@ from datetime import datetime, timedelta
 
 from_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
 # .envファイルからAPIキーを読み込む
-load_dotenv()
+load_dotenv(dotenv_path)
 API_KEY = os.getenv("NEWS_API_KEY")
 
-def fetch_articles(query="生成AI", max_articles=100):
+def fetch_ai_news(query="生成AI", max_articles=100):
     """
     NewsAPIを使用して指定したキーワードに関連するニュース記事を取得する関数。
 
