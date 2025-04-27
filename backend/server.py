@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from typing import Optional
+from datetime import date
 from fastapi.middleware.cors import CORSMiddleware
 from backend.fetch_news import fetch_ai_news
 from backend.summarize import summarize_content, get_article_content, init_cohere
@@ -6,6 +8,7 @@ from backend.title_rewrite import generate_clickbait_title
 
 app = FastAPI()
 init_cohere()
+summary_cache = {}
 
 # CORS設定（Streamlitから叩けるようにする）
 app.add_middleware(
@@ -17,8 +20,8 @@ app.add_middleware(
 
 # ニュースリストを取得するAPI
 @app.get("/api/news")
-def get_news():
-    articles = fetch_ai_news(max_articles=5)
+def get_news(query: str = "生成AI", from_date: Optional[date] = None, to_date: Optional[date] = None):
+    articles = fetch_ai_news(query=query, max_articles=10, from_date=from_date, to_date=to_date)
 
     news_data = []
     for idx, article in enumerate(articles):
@@ -26,10 +29,15 @@ def get_news():
         kajo_title = generate_clickbait_title(title)  # 煽りタイトル
         url = article['url']
         published_at = article['publishedAt']
+        importance = article.get('importance', 80)
 
-        # 本文と要約取得（簡易版）
-        content = get_article_content(url)
-        summary = summarize_content(content) if content else "要約できませんでした"
+        # ✅ 本文と要約取得（キャッシュ確認付き！）
+        if url in summary_cache:
+            summary = summary_cache[url]
+        else:
+            content = get_article_content(url)
+            summary = summarize_content(content) if content else "要約できませんでした"
+            summary_cache[url] = summary  # キャッシュ保存
 
         news_data.append({
             "id": idx,
@@ -38,10 +46,11 @@ def get_news():
             "summary": summary,
             "url": url,
             "publishedAt": published_at,
-            "importance": 80,  # 仮置き。後で速報性スコアなどにできる
+            "importance": importance,
         })
 
     return {"data": news_data}
+
 
 # 個別ニュース詳細取得
 @app.get("/api/news/{news_id}")
@@ -58,6 +67,12 @@ def get_news_summary(news_id: int):
     articles = fetch_ai_news(max_articles=5)
     article = articles[news_id]
     url = article['url']
-    content = get_article_content(url)
-    summary = summarize_content(content) if content else "要約できませんでした"
+    # 要約キャッシュを確認
+    if url in summary_cache:
+        summary = summary_cache[url]
+    else:
+        content = get_article_content(url)
+        summary = summarize_content(content) if content else "要約できませんでした"
+        summary_cache[url] = summary  # キャッシュ保存
+
     return {"data": {"summary": summary}}
