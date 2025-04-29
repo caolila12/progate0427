@@ -12,3 +12,7 @@ venv/
 env/
 ENV/
 .env
+
+package.json
+tsconfig.json
+.devcontainer
