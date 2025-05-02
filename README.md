@@ -9,6 +9,6 @@
    conda create -n newsdash python=3.9
    conda activate newsdash
 
-2.必要なパッケージのインストール
+2. 必要なパッケージのインストール
    ```bash
    pip install -r requirements.txt
