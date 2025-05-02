@@ -10,4 +10,5 @@
    conda activate newsdash
 
 2.必要なパッケージのインストール
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
