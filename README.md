@@ -92,6 +92,7 @@ uvicorn server:app --reload
 
 # 別ターミナルで Streamlit フロントエンドの起動
 streamlit run app.py
+```
 
 # 想定利用シーン・展望
 - 技術情報に感度の高いユーザーが、効率的に最新動向を把握可能
