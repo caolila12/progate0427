@@ -28,6 +28,7 @@
 | フロントエンド | [Streamlit](https://streamlit.io/)            |
 | バックエンド   | [FastAPI](https://fastapi.tiangolo.com/)      |
 | 要約API        | [Cohere API](https://cohere.com/)（Command R+） |
+| タイトル変更API | [Gemini API](https://gemini.google.com)|
 | ニュース取得   | [NewsAPI](https://newsapi.org/)               |
 | パース処理     | BeautifulSoup                                 |
 | 環境変数管理   | python-dotenv                                 |
